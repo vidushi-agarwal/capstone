@@ -19,7 +19,7 @@ slash_sy = ['tan', 'sqrt', 'mul', 'pi', 'phi', 'theta',  'sin', 'alpha', 'beta',
             'infty', 'leq', 'sum', 'geq', 'neq', 'lim', 'log', 'int', 'frac', 'cos', 'bar', 'div', '^', '_']
 
 variable = [i for i in sy if i not in slash_sy]
-
+dict={}
 
 class SymPred():
     def __init__(self, prediction, x1, y1, x2, y2):
@@ -43,7 +43,8 @@ class SymPred():
             str(self.x1),
             str(self.y1),
             str(self.x2),
-            str(self.y2)])
+            str(self.y2),
+            '\n'])
 
 
 class ImgPred():
@@ -56,20 +57,26 @@ class ImgPred():
         self.latex = latex
         self.sym_pred_list = sym_pred_list
 
-    def __str__(self):
+    def func(self):
+        list=[]
         res = self.image_name + '\t' + \
             str(len(self.sym_pred_list)) + '\t' + self.latex + '\n'
         for sym_pred in self.sym_pred_list:
             res += str(sym_pred) + '\n'
+            list.append(str(sym_pred))
+        dict["image_name"]=self.image_name
+        dict["len"]=len(self.sym_pred_list)
+        dict["eqn"]=self.latex
+        dict["result"]=list
+        print("h&&&&s")
         return res
+
 
 
 def predict(image_path):
     # bounding box on given image and sort the symbols by x and y
     test_symbol_list = boundingBox.createSymbol(image_path)
-    # print(test_symbol_list)
     test_symbol_list = sorted(test_symbol_list, key=operator.itemgetter(2, 3))
-    # print(test_symbol_list)
     pre_symbol_list = []
     model = load_model('C:/Users/VIDUSHI/Desktop/python_frameworks/django assign/capstone/myApp/spnet.hdf5')
 
@@ -90,7 +97,6 @@ def predict(image_path):
         im = img2.reshape(1, 45, 45, 3)
 
         result = model.predict_classes(im, batch_size=32)
-        #print(test_symbol, result)
 
         # analysis for dot pattern
         if test_symbol[1] != "dot":
@@ -112,27 +118,30 @@ def predict(image_path):
     # predict the latex expression of equation
     equation = pf.toLatex(updated_symbol_list)
 
-    print(str(parse_latex(equation)))
-    print(parse_expr(str(parse_latex(equation))))
+    # print(str(parse_latex(equation)))
+    # print(parse_expr(str(parse_latex(equation))))
+
 
     # out put the result
     head, tail = os.path.split(image_path)
-    img_prediction = ImgPred(tail, pre_symbol_list, equation)
+    res = ImgPred(tail, pre_symbol_list, equation)
+    res1=res.func()
+    print(res1)
+    dict["ans"]=parse_expr(str(parse_latex(equation)))
+    return dict
 
-    return img_prediction
 
-
-image_folder_path = './data'
-
-image_paths = glob(image_folder_path + '/*png')
-
-results = []
-
-for image_path in image_paths:
-    print(image_path)
-    impred = predict(image_path)
-    results.append(impred)
-
-with open('predictions.txt', 'w') as fout:
-    for res in results:
-        fout.write(str(res))
+# image_folder_path = './data'
+#
+# image_paths = glob(image_folder_path + '/*png')
+#
+# results = []
+#
+# for image_path in image_paths:
+#     print(image_path)
+#     impred = predict(image_path)
+#     results.append(impred)
+#
+# with open('predictions.txt', 'w') as fout:
+#     for res in results:
+#         fout.write(str(res))

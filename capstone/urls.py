@@ -20,6 +20,7 @@ from myApp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.process,name="process"),
+    path('result/',views.result,name="result")
 ]
 
 #media staticfiles

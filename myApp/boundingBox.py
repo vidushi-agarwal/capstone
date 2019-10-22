@@ -11,7 +11,7 @@ from PIL import Image, ImageDraw
 equal_path = "C:/Users/VIDUSHI/Desktop/python_frameworks/django assign/capstone/myApp/data/annotated_test_Equal/"
 equal_boxed_path = "C:/Users/VIDUSHI/Desktop/python_frameworks/django assign/capstone/myApp/data/annotated_test_Equal_boxes/"
 equal_result_path = "C:/Users/VIDUSHI/Desktop/python_frameworks/django assign/capstone/myApp/data/annotated_test_Equal_result/"
-
+static_path = "C:/Users/VIDUSHI/Desktop/python_frameworks/django assign/capstone/myApp/static/myApp/images/"
 # clipt image into box using OpenCV
 
 # The next step is further optimizing using the size provided by TA
@@ -240,6 +240,8 @@ def saveImages(im, boxes, im_name):
         num = num + 1
     new_image = Image.fromarray(im)
     new_image.save(equal_result_path + im_name + ".png")
+    new_image.save(static_path + im_name+".png")
+
 
 # slices im into smaller images based on boxes
 

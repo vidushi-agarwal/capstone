@@ -4,4 +4,4 @@ from .models import Profile
 class RegisterDp(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['dp']
+        fields = ['Image']

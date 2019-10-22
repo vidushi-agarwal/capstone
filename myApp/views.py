@@ -8,36 +8,29 @@ from django.http import HttpResponse
 from . import predict
 import glob
 
+def result(request):
+    return render(request,"myApp/result.html",{})
+
 def process(request):
     if(request.method=="POST"):
         pr_form= RegisterDp(request.POST,request.FILES)
         if  pr_form.is_valid():
             x = Profile()
-            x.dp = request.FILES['dp']
-            if x.dp==None:
-                x.dp=x.dp.default;
+            x.Image = request.FILES['Image']
+            if x.Image==None:
+                x.Image=x.Image.default;
             x.save()
-
-            #################''
-            image_folder_path = "./data" ############
-            image_paths = glob.glob("C:/Users/VIDUSHI/Desktop/python_frameworks/django assign/capstone/myApp/data/Untitled.png")
-            print(image_paths) ###########
-
+            print(x.Image)
+            #################
+            image_paths = glob.glob("C:/Users/VIDUSHI/Desktop/python_frameworks/django assign/capstone/media/"+str(x.Image))
             results = []
-
             for image_path in image_paths:
-                print(image_path)
                 impred = predict.predict(image_path)
-                print(impred)
-                results.append(impred)
+                print(impred.get("len"))
+            #################
+            messages.success(request, f' Woah, Photo is successfully processed' )
+            return render(request,"myApp/result.html",{"Image":x.Image,"image_name":impred.get("image_name"),"len":impred.get("len"),"eqn":impred.get("eqn"),"result":impred.get("result"),"ans":impred.get("ans")})
 
-            with open('predictions.txt', 'w') as fout:
-                for res in results:
-                    fout.write(str(res))
-
-################
-            messages.success(request, f' Hi, Photo is successfully uploaded' )
-            return redirect("process")
     else:
          pr_form= RegisterDp()
-    return render(request,"myApp/main_page.html",{"dp":pr_form})
+    return render(request,"myApp/main_page.html",{"Image":pr_form})

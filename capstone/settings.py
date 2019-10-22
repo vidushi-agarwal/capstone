@@ -25,7 +25,7 @@ SECRET_KEY = '3jg&^91j!a+1r9p)e9%vq88+e8f8fnqt9gl$26-t-868!0-ixd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["afternoon-meadow-45274.herokuapp.com","127.0.0.1"]
 
 
 # Application definition
@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
-
+CORS_ORIGIN_ALLOW_ALL = True
 ROOT_URLCONF = 'capstone.urls'
 
 TEMPLATES = [

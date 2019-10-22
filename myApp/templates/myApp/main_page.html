@@ -2,6 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     {% load staticfiles %}
+    {% load crispy_forms_tags %}
     <meta charset="utf-8">
     <title>Process</title>
     <link href="{% static 'myApp/images/favicon.ico' %}" rel="icon" type="image/x-icon">
@@ -9,6 +10,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <body>
+
+    {% if messages%}
+    <div style="z-index: 100;
+    position: absolute;
+    margin-top: -19%;
+    background-color: #adffd1;
+    color: #00050a;
+    text-decoration: solid;
+    font-size: larger;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 1%;
+    padding-bottom: 1%;">
+      {% for message in messages %}
+      <div class="alert alert-{{message.tags}}">
+        {{message}}
+      </div>
+      {%endfor%}
+    </div>
+      {% endif %}
+
+
     <div id="screenshot">
       <div id="video-boxes">
         <div id="live-video-box">
@@ -27,32 +50,15 @@
         <div id="dl-btn-box">
           <a id="dl-btn" href="#" download="photo.png">Save Photo</a>
         </div>
-
         <form id="form-id" method="post" action="" onsubmit="prepareImg();" enctype="multipart/form-data">
           {% csrf_token %}
           <input id="inp_img" name="inp_img" type="hidden" value="">
-          <input id="bt_upload" type="submit" value="Retake">
-        </form>
-
-        {% block content %}
-        <div >
-          <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
+          <!-- <input id="bt_upload" type="submit" value="Retake"> -->
             <fieldset>
-              <legend>
-                <h1> Join us! </h1>
-              </legend>
-              {{dp}}
-              
+              {{Image}}
             </fieldset>
-            <div>
-              <button type="submit" class="btn btn-primary">Process</button>
-            </div>
+              <input id="bt_upload" type="submit" value="Process">
           </form>
-        </div >
-        {%endblock %}
-
-
       </div>
     </div>
   </body>

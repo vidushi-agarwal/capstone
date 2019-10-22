@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    {% load staticfiles %}
+    {% load crispy_forms_tags %}
+    <meta charset="utf-8">
+    <title>Result</title>
+    <link href="{% static 'myApp/images/favicon.ico' %}" rel="icon" type="image/x-icon">
+    <link href="{% static 'myApp/css/master.css' %}" rel="stylesheet" >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+
+    {% if messages%}
+    <div style="z-index: 100;
+    position: absolute;
+    margin-top: -19%;
+    background-color: #adffd1;
+    color: #00050a;
+    text-decoration: solid;
+    font-size: larger;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 1%;
+    padding-bottom: 1%;">
+      {% for message in messages %}
+      <div class="alert alert-{{message.tags}}">
+        {{message}}
+      </div>
+      {%endfor%}
+    </div>
+      {% endif %}
+
+
+    <div id="screenshot">
+      <div id="video-boxes">
+        <div id="capture-video-box">
+          <h1> Results </h1>
+  <div>
+<form  method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <fieldset>
+  <legend> <h3>The expression was</h3></legend>
+  {{eqn}}
+  <legend><h3>Total characters in the equation are</h3></legend>{{len}}
+  <legend><h3 >The co-ordinates </h3><h4>(x1,y1) (x2,y2) are the top-left and bottom-right coordinates for the bounding box
+     <pre>(x1,y1)
+            .--------
+            |           |
+            |           |
+             --------.
+                      (x2,y2)</pre></h4></<legend>
+                        {% for i in result %}
+                            {{i}}<br>
+                           {% endfor %}
+  <legend><h3 >The final evaluation is</h3></legend>{{ans}}
+</fieldset>
+</form>
+</div>
+
+        </div>
+        <div id="capture-video-box" >
+        <img src={% static "myApp/images/a.png" %} id="capture-video">
+        </div>
+        </div>
+
+      <div id="some-buttons">
+        <a  class="capture-button" href={% url 'process' %}><h3 style="text-align:center;position:relative;top:-100%">Process</h3></a>
+      </div>
+    </div>
+  </body>
+</html>
