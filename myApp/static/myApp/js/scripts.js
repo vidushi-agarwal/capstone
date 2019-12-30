@@ -1,4 +1,3 @@
-
 var boxHeight = document.getElementById('capture-video').clientHeight;
 var lv=document.getElementById("live-video").style.height =boxHeight+"px" ;
 setInterval(function() {
